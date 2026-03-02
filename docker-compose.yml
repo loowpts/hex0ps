@@ -129,7 +129,37 @@ services:
       - ollama_data:/root/.ollama
     ports:
       - "11434:11434"
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     restart: unless-stopped
+
+  # Скачивает модель при первом запуске (~2 GB, один раз).
+  # Модель хранится в volume ollama_data — повторных загрузок нет.
+  ollama-init:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    entrypoint: >
+      sh -c "
+        echo 'Ждём Ollama...' &&
+        until ollama list 2>/dev/null; do sleep 2; done &&
+        if ollama list | grep -q '${OLLAMA_MODEL:-llama3.2:3b}'; then
+          echo 'Модель уже скачана.';
+        else
+          echo 'Скачиваем ${OLLAMA_MODEL:-llama3.2:3b}...' &&
+          ollama pull ${OLLAMA_MODEL:-llama3.2:3b};
+        fi
+      "
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: "no"
 
 volumes:
   postgres_data:
