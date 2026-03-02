@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 import { api } from '@/api/client'
 import type { InterviewQuestion, InterviewAttemptResult } from '@/types'
 
@@ -25,8 +26,11 @@ function useSubmitAnswer() {
   return useMutation<InterviewAttemptResult, Error, { questionId: number; answer: string }>({
     mutationFn: ({ questionId, answer }) =>
       api
-        .post('/interview/answer/', { question_id: questionId, answer })
+        .post('/interview/answer/', { question_id: questionId, answer }, { timeout: 60_000 })
         .then((r) => r.data),
+    onError: () => {
+      toast.error('Не удалось отправить ответ. Попробуй ещё раз.')
+    },
   })
 }
 
@@ -336,6 +340,11 @@ export default function Interview() {
                   />
                   {validationError && (
                     <p className="text-red-400 text-xs">{validationError}</p>
+                  )}
+                  {submitAnswer.isError && (
+                    <p className="text-red-400 text-xs text-center">
+                      Ошибка при отправке. Проверь соединение и попробуй ещё раз.
+                    </p>
                   )}
                   <button
                     onClick={handleSubmit}
