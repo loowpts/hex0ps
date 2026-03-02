@@ -27,7 +27,15 @@ if echo "$@" | grep -q "daphne"; then
 
   echo "[entrypoint] Migrations..."
   python manage.py makemigrations users --noinput
-  python manage.py makemigrations --noinput
+  python manage.py makemigrations tasks --noinput
+  python manage.py makemigrations courses --noinput
+  python manage.py makemigrations notes --noinput
+  python manage.py makemigrations cheatsheets --noinput
+  python manage.py makemigrations interview --noinput
+  python manage.py makemigrations certs --noinput
+  python manage.py makemigrations collab --noinput
+  python manage.py makemigrations analytics --noinput
+  python manage.py makemigrations terminal --noinput
   python manage.py migrate --noinput
 
   echo "[entrypoint] Static files..."
