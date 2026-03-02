@@ -25,6 +25,26 @@ services:
       timeout: 3s
       retries: 5
 
+  # Собирает sandbox-образы для задач. Запускается один раз, затем завершается.
+  # backend и celery не стартуют пока образы не собраны.
+  sandbox-builder:
+    image: docker:27-cli
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./sandbox:/sandbox
+    command: >
+      sh -c "
+        build() { docker build -t \"$$1\" \"$$2\" && echo \"OK: $$1\"; }
+        build devops-platform/base:latest              /sandbox/images/base
+        build devops-platform/nginx:latest             /sandbox/images/nginx
+        build devops-platform/broken/nginx_syntax:latest    /sandbox/images/broken/nginx_syntax
+        build devops-platform/broken/nginx_port:latest      /sandbox/images/broken/nginx_port
+        build devops-platform/broken/nginx_permissions:latest /sandbox/images/broken/nginx_permissions
+        build devops-platform/broken/systemd_path:latest   /sandbox/images/broken/systemd_path
+        build devops-platform/broken/docker_port:latest    /sandbox/images/broken/docker_port
+      "
+    restart: "no"
+
   backend:
     build:
       context: ./backend
@@ -46,6 +66,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      sandbox-builder:
+        condition: service_completed_successfully
     restart: unless-stopped
 
   celery:
@@ -65,6 +87,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      sandbox-builder:
+        condition: service_completed_successfully
     restart: unless-stopped
 
   celery-beat:
