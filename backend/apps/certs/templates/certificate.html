@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: #0a0e17;
+      color: #e2e8f0;
+      width: 210mm;
+      height: 148mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .certificate {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0f1520 0%, #141c2e 50%, #0f1520 100%);
+      border: 2px solid #00d4ff;
+      border-radius: 12px;
+      padding: 32px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Декоративный фон */
+    .certificate::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0,212,255,0.05) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      font-size: 14px;
+      font-weight: 700;
+      color: #00d4ff;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .logo span { color: #00e676; }
+
+    .cert-id-badge {
+      font-size: 10px;
+      color: #8899aa;
+      font-family: 'Courier New', monospace;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, #00d4ff, transparent);
+      margin-bottom: 20px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #8899aa;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+
+    .username {
+      font-size: 36px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+      line-height: 1.1;
+    }
+
+    .completed-text {
+      font-size: 13px;
+      color: #8899aa;
+      margin-bottom: 4px;
+    }
+
+    .category {
+      font-size: 22px;
+      font-weight: 700;
+      color: #00d4ff;
+      margin-bottom: 24px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: auto;
+    }
+
+    .details {
+      font-size: 11px;
+      color: #8899aa;
+      line-height: 1.8;
+      font-family: 'Courier New', monospace;
+    }
+
+    .verify-section {
+      text-align: right;
+    }
+
+    .verify-label {
+      font-size: 9px;
+      color: #8899aa;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .verify-url {
+      font-size: 9px;
+      color: #00d4ff;
+      font-family: 'Courier New', monospace;
+    }
+
+    .seal {
+      width: 64px;
+      height: 64px;
+      border: 2px solid #00e676;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #00e676;
+      margin-left: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="certificate">
+    <div class="header">
+      <div class="logo">DevOps<span>Platform</span></div>
+      <div class="cert-id-badge">ID: {{ cert_id }}</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="subtitle">Настоящий сертификат подтверждает что</div>
+    <div class="username">{{ username }}</div>
+    <div class="completed-text">успешно завершил(а) курс</div>
+    <div class="category">{{ category_name }}</div>
+
+    <div class="footer">
+      <div class="details">
+        <div>Дата выдачи: {{ issued_at }}</div>
+        <div>Верификация: {{ verify_url }}</div>
+      </div>
+      <div style="display: flex; align-items: center;">
+        <div class="verify-section">
+          <div class="verify-label">Платформа практики</div>
+          <div class="verify-url">devops-platform.ru</div>
+        </div>
+        <div class="seal">🏆</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
