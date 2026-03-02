@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Arial', sans-serif; background: #0a0e17; color: #e2e8f0; padding: 40px; }
+    .header { text-align: center; margin-bottom: 40px; padding: 30px; background: linear-gradient(135deg, #0f1520, #1e2d45); border-radius: 16px; border: 1px solid #1e2d45; }
+    .header h1 { font-size: 28px; color: #00d4ff; margin-bottom: 8px; }
+    .header .subtitle { color: #8899aa; font-size: 14px; }
+    .user-info { display: flex; justify-content: space-around; margin-bottom: 30px; flex-wrap: wrap; gap: 12px; }
+    .stat-card { text-align: center; padding: 20px; background: #0f1520; border-radius: 12px; border: 1px solid #1e2d45; min-width: 120px; }
+    .stat-card .value { font-size: 28px; font-weight: bold; color: #00e676; }
+    .stat-card .label { font-size: 12px; color: #8899aa; margin-top: 4px; }
+    h2 { font-size: 18px; color: #e2e8f0; margin: 30px 0 16px; padding-bottom: 8px; border-bottom: 1px solid #1e2d45; }
+    .skill-row { margin-bottom: 12px; }
+    .skill-header { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 13px; }
+    .skill-name { color: #e2e8f0; }
+    .skill-count { color: #8899aa; }
+    .skill-bar-bg { background: #1e2d45; border-radius: 4px; height: 8px; overflow: hidden; }
+    .skill-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #00d4ff, #00e676); }
+    .task-item { padding: 8px 12px; background: #0f1520; border: 1px solid #1e2d45; border-radius: 8px; margin-bottom: 6px; font-size: 12px; display: flex; justify-content: space-between; }
+    .task-title { color: #e2e8f0; }
+    .task-xp { color: #00e676; font-weight: bold; }
+    .achievement-item { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; background: #0f1520; border: 1px solid #1e2d45; border-radius: 8px; margin: 4px; font-size: 12px; }
+    .cert-item { padding: 12px; background: #0f1520; border: 1px solid #00d4ff33; border-radius: 8px; margin-bottom: 8px; }
+    .cert-category { color: #00d4ff; font-weight: bold; font-size: 13px; }
+    .cert-date { color: #8899aa; font-size: 11px; }
+    .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #1e2d45; color: #4a5568; font-size: 11px; }
+    .level-bar-bg { background: #1e2d45; border-radius: 8px; height: 12px; overflow: hidden; margin: 8px 0; }
+    .level-bar-fill { height: 100%; background: linear-gradient(90deg, #00d4ff, #00e676); border-radius: 8px; }
+    .category-tag { display: inline-block; padding: 2px 8px; background: #00d4ff15; border: 1px solid #00d4ff30; border-radius: 4px; color: #00d4ff; font-size: 10px; text-transform: uppercase; margin-right: 4px; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <h1>DevOps Learning Platform</h1>
+    <div class="subtitle">Отчёт о прогрессе — {{ generated_at|date:"d.m.Y" }}</div>
+  </div>
+
+  <!-- User stats -->
+  <div class="user-info">
+    <div class="stat-card">
+      <div class="value">{{ user.username }}</div>
+      <div class="label">Пользователь</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">{{ user.get_level_display }}</div>
+      <div class="label">Уровень</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">{{ user.xp }}</div>
+      <div class="label">XP</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">{{ total_completed }}</div>
+      <div class="label">Задач выполнено</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">{{ user.streak }}</div>
+      <div class="label">Стрик (дней)</div>
+    </div>
+  </div>
+
+  <!-- Level progress -->
+  <div style="margin-bottom: 30px;">
+    <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
+      <span style="color: #8899aa;">Прогресс до следующего уровня</span>
+      <span style="color: #00d4ff;">{{ level_pct }}%</span>
+    </div>
+    <div class="level-bar-bg">
+      <div class="level-bar-fill" style="width: {{ level_pct }}%;"></div>
+    </div>
+  </div>
+
+  <!-- Skills -->
+  <h2>Навыки по категориям</h2>
+  {% for cat, skill in skills.items %}
+    {% if skill.total > 0 %}
+    <div class="skill-row">
+      <div class="skill-header">
+        <span class="skill-name">{{ cat|upper }}</span>
+        <span class="skill-count">{{ skill.completed }}/{{ skill.total }} ({{ skill.pct }}%)</span>
+      </div>
+      <div class="skill-bar-bg">
+        <div class="skill-bar-fill" style="width: {{ skill.bar_width }}%;"></div>
+      </div>
+    </div>
+    {% endif %}
+  {% endfor %}
+
+  <!-- Completed tasks by category -->
+  {% if tasks_by_category %}
+  <h2>Выполненные задачи</h2>
+  {% for cat, tasks in tasks_by_category.items %}
+    <div style="margin-bottom: 16px;">
+      <div style="margin-bottom: 8px;"><span class="category-tag">{{ cat }}</span></div>
+      {% for ut in tasks %}
+      <div class="task-item">
+        <span class="task-title">{{ ut.task.title_ru }}</span>
+        <span class="task-xp">+{{ ut.xp_earned }} XP</span>
+      </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+  {% endif %}
+
+  <!-- Achievements -->
+  {% if achievements %}
+  <h2>Достижения</h2>
+  <div>
+    {% for ach in achievements %}
+    <div class="achievement-item">
+      <span>{{ ach.icon }}</span>
+      <span style="color: #e2e8f0;">{{ ach.title_ru }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Certificates -->
+  {% if certificates %}
+  <h2>Сертификаты</h2>
+  {% for cert in certificates %}
+  <div class="cert-item">
+    <div class="cert-category">{{ cert.category_display }}</div>
+    <div class="cert-date">Выдан: {{ cert.issued_at|date:"d.m.Y" }} · ID: {{ cert.cert_id }}</div>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>DevOps Learning Platform · Сгенерировано {{ generated_at|date:"d.m.Y H:i" }}</p>
+    <p style="margin-top: 4px;">Данный отчёт подтверждает прогресс пользователя {{ user.username }}</p>
+  </div>
+</body>
+</html>
