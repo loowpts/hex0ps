@@ -71,6 +71,7 @@ docker compose up --build
 |---|---|---|
 | `db` | postgres:15-alpine | База данных |
 | `redis` | redis:7-alpine | Брокер + кэш |
+| `sandbox-builder` | docker:27-cli | Сборка Docker-образов для задач (запускается один раз) |
 | `backend` | ./backend/Dockerfile | Django + Daphne (ASGI) |
 | `celery` | ./backend/Dockerfile | Воркер задач |
 | `celery-beat` | ./backend/Dockerfile | Планировщик задач |
