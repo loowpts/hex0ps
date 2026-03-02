@@ -31,7 +31,7 @@ class OllamaClient:
     def model(self):
         return settings.OLLAMA_MODEL
 
-    def generate(self, prompt: str, system: str = None) -> str:
+    def generate(self, prompt: str, system: str = None, num_predict: int = 512, timeout: int = None) -> str:
         try:
             response = requests.post(
                 f'{self.base_url}/api/generate',
@@ -42,10 +42,10 @@ class OllamaClient:
                     'stream': False,
                     'options': {
                         'temperature': 0.7,
-                        'num_predict': 512,
+                        'num_predict': num_predict,
                     },
                 },
-                timeout=getattr(settings, 'OLLAMA_TIMEOUT', 30),
+                timeout=timeout or getattr(settings, 'OLLAMA_TIMEOUT', 30),
             )
             response.raise_for_status()
             return response.json().get('response', '')
@@ -125,6 +125,8 @@ class OllamaClient:
                     'Возвращай ТОЛЬКО валидный JSON без дополнительного текста. '
                     'Никогда не используй английские слова в feedback, strengths, improvements.'
                 ),
+                num_predict=256,
+                timeout=90,
             )
             if response_text:
                 cleaned = re.sub(r'[\u4e00-\u9fff\u3000-\u303f]', '', response_text)
