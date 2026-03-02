@@ -83,7 +83,7 @@ export default function TerminalPanel({
     term.loadAddon(fitAddon)
     term.loadAddon(webLinksAddon)
     term.open(containerRef.current)
-    try { fitAddon.fit() } catch { /* контейнер ещё не отрисован */ }
+    fitAddon.fit()
 
     termRef.current = term
     fitRef.current = fitAddon
@@ -211,21 +211,32 @@ export default function TerminalPanel({
   }, [])
 
   // --- Монтирование ---
+  // Откладываем инит в requestAnimationFrame: xterm.js внутри term.open()
+  // запускает setTimeout для Viewport, который упадёт если контейнер
+  // ещё не прошёл layout (dimensions === undefined).
   useEffect(() => {
-    const term = initTerminal()
-    if (!term) return
+    let cleanup: (() => void) | undefined
+    const frame = requestAnimationFrame(() => {
+      const term = initTerminal()
+      if (!term) return
 
-    const fitAddon = fitRef.current!
-    connectWs(term)
-    setupResize(term, fitAddon)
+      const fitAddon = fitRef.current!
+      connectWs(term)
+      setupResize(term, fitAddon)
+
+      cleanup = () => {
+        wsRef.current?.close(1000)
+        wsRef.current = null
+        resizeObserverRef.current?.disconnect()
+        term.dispose()
+        termRef.current = null
+        fitRef.current = null
+      }
+    })
 
     return () => {
-      wsRef.current?.close(1000)
-      wsRef.current = null
-      resizeObserverRef.current?.disconnect()
-      term.dispose()
-      termRef.current = null
-      fitRef.current = null
+      cancelAnimationFrame(frame)
+      cleanup?.()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId])
