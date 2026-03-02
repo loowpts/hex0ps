@@ -256,7 +256,14 @@ function NodeList({ nodes }: { nodes: RoadmapNode[] }) {
 
 export default function Roadmap() {
   const { data, isLoading } = useRoadmap()
-  const roadmapData = data as RoadmapData | undefined
+  const raw = data as RoadmapData | undefined
+  // Дедупликация на случай если API вернул дублирующиеся узлы
+  const roadmapData = raw
+    ? {
+        ...raw,
+        nodes: raw.nodes.filter((n, i, arr) => arr.findIndex((x) => x.id === n.id) === i),
+      }
+    : undefined
 
   return (
     <div className="min-h-screen bg-[#0a0e17] p-6 max-w-7xl mx-auto">

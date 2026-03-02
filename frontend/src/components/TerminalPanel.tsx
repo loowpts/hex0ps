@@ -83,7 +83,7 @@ export default function TerminalPanel({
     term.loadAddon(fitAddon)
     term.loadAddon(webLinksAddon)
     term.open(containerRef.current)
-    fitAddon.fit()
+    try { fitAddon.fit() } catch { /* контейнер ещё не отрисован */ }
 
     termRef.current = term
     fitRef.current = fitAddon
