@@ -38,12 +38,16 @@ function HeatmapCalendar({ heatmap }: { heatmap: AnalyticsData['heatmap'] }) {
             {week.map((day) => {
               const key = format(day, 'yyyy-MM-dd')
               const d = heatmap[key]
+              const label = `${format(day, 'd MMM yyyy', { locale: ru })}: ${d?.tasks ?? 0} занятий, ${d?.xp ?? 0} XP`
               return (
-                <div
-                  key={key}
-                  title={`${format(day, 'd MMM', { locale: ru })}: ${d?.tasks ?? 0} задач, ${d?.xp ?? 0} XP`}
-                  className={`w-3 h-3 rounded-sm cursor-pointer transition-opacity hover:opacity-80 ${getColor(key)}`}
-                />
+                <div key={key} className="relative group">
+                  <div className={`w-3 h-3 rounded-sm cursor-pointer transition-opacity hover:opacity-80 ${getColor(key)}`} />
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 z-10 hidden group-hover:block pointer-events-none">
+                    <div className="bg-[#0a0e17] border border-[#1e2d45] rounded-lg px-2.5 py-1.5 text-xs text-[#e2e8f0] whitespace-nowrap shadow-xl">
+                      {label}
+                    </div>
+                  </div>
+                </div>
               )
             })}
           </div>

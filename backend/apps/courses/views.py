@@ -3,6 +3,7 @@ Views для LMS: курсы, уроки, квизы.
 """
 import logging
 from django.utils import timezone
+from django.core.cache import cache
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -212,6 +213,7 @@ def lesson_complete_view(request, lesson_id):
             action=ActivityLog.ACTION_LESSON_COMPLETED,
             metadata={'lesson_id': lesson.id, 'xp_earned': xp_earned},
         )
+        cache.delete(f'analytics_me:{request.user.id}')
 
     return Response({
         'completed': True,
@@ -282,6 +284,7 @@ def quiz_submit_view(request, quiz_id):
                 action=ActivityLog.ACTION_QUIZ_PASSED,
                 metadata={'quiz_id': quiz.id, 'score': score, 'xp_earned': xp_earned},
             )
+            cache.delete(f'analytics_me:{request.user.id}')
 
     attempt = QuizAttempt.objects.create(
         user=request.user,
