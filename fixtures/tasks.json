@@ -1,0 +1,399 @@
+[
+  {
+    "model": "tasks.task",
+    "pk": 1,
+    "fields": {
+      "title_ru": "Привет, терминал!",
+      "description_ru": "Добро пожаловать на DevOps Learning Platform!\n\nВведи команду ниже чтобы создать файл с приветствием:\n\n`echo \"Hello DevOps\" > /tmp/hello.txt`\n\nЗатем проверь что файл создан: `cat /tmp/hello.txt`",
+      "hint_1_ru": "Команда echo выводит текст. Знак > перенаправляет вывод в файл.",
+      "hint_2_ru": "Попробуй: echo \"Hello DevOps\" > /tmp/hello.txt",
+      "hint_3_ru": "Введи точно: echo \"Hello DevOps\" > /tmp/hello.txt и нажми Enter.",
+      "category": "onboarding",
+      "difficulty": "beginner",
+      "task_type": "regular",
+      "xp_reward": 50,
+      "time_limit": 10,
+      "docker_image": "devops-platform/base:latest",
+      "checker_type": "file_exists",
+      "checker_config": {
+        "path": "/tmp/hello.txt",
+        "expected": "Hello DevOps"
+      },
+      "solution_steps": [
+        {
+          "command": "echo \"Hello DevOps\" > /tmp/hello.txt",
+          "explanation": "Создаём файл с текстом через перенаправление вывода."
+        },
+        {
+          "command": "cat /tmp/hello.txt",
+          "explanation": "Проверяем содержимое файла."
+        }
+      ],
+      "is_active": true,
+      "order": 0,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 2,
+    "fields": {
+      "title_ru": "Навигация по файловой системе",
+      "description_ru": "Научись перемещаться по файловой системе Linux.\n\nЗадание: узнай текущую директорию, посмотри её содержимое, перейди в /tmp и создай там файл `devops.txt`.",
+      "hint_1_ru": "Используй pwd чтобы узнать текущую директорию, ls чтобы посмотреть содержимое.",
+      "hint_2_ru": "Последовательность: pwd → ls → cd /tmp → ls",
+      "hint_3_ru": "Выполни: cd /tmp && touch devops.txt",
+      "category": "linux",
+      "difficulty": "beginner",
+      "task_type": "regular",
+      "xp_reward": 100,
+      "time_limit": 20,
+      "docker_image": "devops-platform/base:latest",
+      "checker_type": "file_exists",
+      "checker_config": {
+        "path": "/tmp/devops.txt"
+      },
+      "solution_steps": [
+        {
+          "command": "pwd",
+          "explanation": "Показываем текущую директорию"
+        },
+        {
+          "command": "ls -la",
+          "explanation": "Смотрим содержимое"
+        },
+        {
+          "command": "cd /tmp",
+          "explanation": "Переходим в /tmp"
+        },
+        {
+          "command": "touch devops.txt",
+          "explanation": "Создаём файл"
+        }
+      ],
+      "is_active": true,
+      "order": 10,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 3,
+    "fields": {
+      "title_ru": "Права доступа к файлам",
+      "description_ru": "Изучи систему прав доступа в Linux.\n\nЗадание: создай файл `/home/devops/script.sh`, сделай его исполняемым и убедись что права выставлены корректно (rwxr-xr-x).",
+      "hint_1_ru": "Права доступа меняются командой chmod.",
+      "hint_2_ru": "Создай файл touch script.sh, затем chmod 755 script.sh",
+      "hint_3_ru": "Выполни: touch /home/devops/script.sh && chmod 755 /home/devops/script.sh",
+      "category": "linux",
+      "difficulty": "beginner",
+      "task_type": "regular",
+      "xp_reward": 120,
+      "time_limit": 25,
+      "docker_image": "devops-platform/base:latest",
+      "checker_type": "command_output",
+      "checker_config": {
+        "command": "ls -la /home/devops/script.sh",
+        "expected": "rwxr-xr-x"
+      },
+      "solution_steps": [
+        {
+          "command": "touch /home/devops/script.sh",
+          "explanation": "Создаём пустой файл"
+        },
+        {
+          "command": "chmod 755 /home/devops/script.sh",
+          "explanation": "755 = rwxr-xr-x: владелец всё, остальные чтение+выполнение"
+        },
+        {
+          "command": "ls -la /home/devops/script.sh",
+          "explanation": "Проверяем права"
+        }
+      ],
+      "is_active": true,
+      "order": 20,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 4,
+    "fields": {
+      "title_ru": "Управление процессами",
+      "description_ru": "Изучи управление процессами в Linux.\n\nЗадание: запусти команду `sleep 120` в фоне, найди её PID через `ps aux`, а затем завершь процесс командой kill.",
+      "hint_1_ru": "Чтобы запустить в фоне, добавь & в конце команды.",
+      "hint_2_ru": "sleep 120 & — запуск в фоне. ps aux | grep sleep — поиск процесса.",
+      "hint_3_ru": "Выполни: sleep 120 & → ps aux | grep sleep → kill <PID>",
+      "category": "linux",
+      "difficulty": "beginner",
+      "task_type": "regular",
+      "xp_reward": 150,
+      "time_limit": 30,
+      "docker_image": "devops-platform/base:latest",
+      "checker_type": "command_output",
+      "checker_config": {
+        "command": "bash -c 'sleep 200 & echo $!'",
+        "expected": ""
+      },
+      "solution_steps": [
+        {
+          "command": "sleep 120 &",
+          "explanation": "Запускаем процесс в фоне. & означает фоновый режим."
+        },
+        {
+          "command": "ps aux | grep sleep",
+          "explanation": "Ищем PID процесса"
+        },
+        {
+          "command": "kill 123",
+          "explanation": "Завершаем процесс. Замени 123 на реальный PID."
+        }
+      ],
+      "is_active": true,
+      "order": 30,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 5,
+    "fields": {
+      "title_ru": "Создание systemd-сервиса",
+      "description_ru": "Создай и запусти простой systemd-сервис.\n\nЗадание: создай unit-файл `/etc/systemd/system/myapp.service`, который будет запускать команду `echo 'myapp started'`. Включи сервис и запусти его.",
+      "hint_1_ru": "Unit-файл systemd содержит секции [Unit], [Service] и [Install].",
+      "hint_2_ru": "Создай файл с минимальным содержимым: [Service]\\nExecStart=/usr/bin/echo 'myapp started'",
+      "hint_3_ru": "Создай /etc/systemd/system/myapp.service, затем systemctl daemon-reload && systemctl start myapp",
+      "category": "systemd",
+      "difficulty": "beginner",
+      "task_type": "regular",
+      "xp_reward": 150,
+      "time_limit": 30,
+      "docker_image": "devops-platform/base:latest",
+      "checker_type": "file_exists",
+      "checker_config": {
+        "path": "/etc/systemd/system/myapp.service"
+      },
+      "solution_steps": [
+        {
+          "command": "cat > /etc/systemd/system/myapp.service << EOF\n[Unit]\nDescription=My App\n\n[Service]\nExecStart=/usr/bin/echo 'myapp started'\nType=oneshot\n\n[Install]\nWantedBy=multi-user.target\nEOF",
+          "explanation": "Создаём unit-файл"
+        },
+        {
+          "command": "systemctl daemon-reload",
+          "explanation": "Перечитываем конфиги systemd"
+        },
+        {
+          "command": "systemctl start myapp",
+          "explanation": "Запускаем сервис"
+        }
+      ],
+      "is_active": true,
+      "order": 40,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 6,
+    "fields": {
+      "title_ru": "Журналы systemd (journald)",
+      "description_ru": "Научись работать с логами через journalctl.\n\nЗадание: просмотри последние 20 строк системного журнала, отфильтруй их по ключевому слову 'error' (регистронезависимо).",
+      "hint_1_ru": "journalctl — инструмент для просмотра системных логов.",
+      "hint_2_ru": "journalctl -n 20 покажет последние 20 строк. Флаг -i для нечувствительности к регистру.",
+      "hint_3_ru": "Выполни: journalctl -n 20 | grep -i error",
+      "category": "systemd",
+      "difficulty": "beginner",
+      "task_type": "regular",
+      "xp_reward": 100,
+      "time_limit": 20,
+      "docker_image": "devops-platform/base:latest",
+      "checker_type": "command_output",
+      "checker_config": {
+        "command": "journalctl --version",
+        "expected": "systemd"
+      },
+      "solution_steps": [
+        {
+          "command": "journalctl -n 20",
+          "explanation": "Последние 20 записей журнала"
+        },
+        {
+          "command": "journalctl -n 20 | grep -i error",
+          "explanation": "Фильтруем по слову 'error'"
+        },
+        {
+          "command": "journalctl -u nginx --since '1 hour ago'",
+          "explanation": "Пример: логи конкретного сервиса за час"
+        }
+      ],
+      "is_active": true,
+      "order": 50,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 7,
+    "fields": {
+      "title_ru": "Настройка виртуального хоста Nginx",
+      "description_ru": "Создай виртуальный хост в Nginx.\n\nЗадание: создай конфиг виртуального хоста для домена `devops.local` в `/etc/nginx/sites-available/devops.local`. Включи сайт и перезагрузи Nginx. Убедись что Nginx запущен и слушает порт 80.",
+      "hint_1_ru": "Виртуальные хосты Nginx хранятся в /etc/nginx/sites-available/ и активируются через символическую ссылку в sites-enabled/.",
+      "hint_2_ru": "Создай конфиг с директивой server { listen 80; server_name devops.local; }. Затем ln -s и nginx -t для проверки.",
+      "hint_3_ru": "Создай конфиг → ln -s /etc/nginx/sites-available/devops.local /etc/nginx/sites-enabled/ → nginx -t → nginx -s reload",
+      "category": "nginx",
+      "difficulty": "intermediate",
+      "task_type": "regular",
+      "xp_reward": 200,
+      "time_limit": 40,
+      "docker_image": "devops-platform/nginx:latest",
+      "checker_type": "port_check",
+      "checker_config": {
+        "port": 80
+      },
+      "solution_steps": [
+        {
+          "command": "cat > /etc/nginx/sites-available/devops.local << 'EOF'\nserver {\n    listen 80;\n    server_name devops.local;\n    root /var/www/html;\n    index index.html;\n}\nEOF",
+          "explanation": "Создаём конфиг виртуального хоста"
+        },
+        {
+          "command": "ln -s /etc/nginx/sites-available/devops.local /etc/nginx/sites-enabled/",
+          "explanation": "Активируем сайт"
+        },
+        {
+          "command": "nginx -t",
+          "explanation": "Проверяем синтаксис конфига"
+        },
+        {
+          "command": "nginx",
+          "explanation": "Запускаем Nginx (или nginx -s reload если уже запущен)"
+        }
+      ],
+      "is_active": true,
+      "order": 60,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 8,
+    "fields": {
+      "title_ru": "Настройка SSL/HTTPS в Nginx",
+      "description_ru": "Настрой HTTPS с самоподписанным сертификатом.\n\nЗадание: создай самоподписанный SSL-сертификат, настрой Nginx для работы по HTTPS на порту 443, добавь редирект с HTTP на HTTPS.",
+      "hint_1_ru": "Для создания самоподписанного сертификата используй openssl.",
+      "hint_2_ru": "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout cert.key -out cert.crt",
+      "hint_3_ru": "Создай сертификат openssl → настрой listen 443 ssl в конфиге Nginx → добавь ssl_certificate и ssl_certificate_key директивы",
+      "category": "nginx",
+      "difficulty": "intermediate",
+      "task_type": "regular",
+      "xp_reward": 250,
+      "time_limit": 45,
+      "docker_image": "devops-platform/nginx:latest",
+      "checker_type": "port_check",
+      "checker_config": {
+        "port": 443
+      },
+      "solution_steps": [
+        {
+          "command": "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/devops.key -out /etc/nginx/ssl/devops.crt -subj '/CN=devops.local'",
+          "explanation": "Генерируем самоподписанный сертификат"
+        },
+        {
+          "command": "# Добавить в конфиг Nginx:\n# listen 443 ssl;\n# ssl_certificate /etc/nginx/ssl/devops.crt;\n# ssl_certificate_key /etc/nginx/ssl/devops.key;",
+          "explanation": "Настраиваем SSL в конфиге"
+        },
+        {
+          "command": "nginx -t && nginx -s reload",
+          "explanation": "Проверяем и перезагружаем"
+        }
+      ],
+      "is_active": true,
+      "order": 70,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 9,
+    "fields": {
+      "title_ru": "Break & Fix: Nginx не запускается",
+      "description_ru": "СЛОМАНО: Nginx не запускается из-за ошибки в конфигурации.\n\nСимптом: команда `nginx -t` завершается с ошибкой. Найди и исправь проблему в конфигурационном файле Nginx, затем запусти сервис.",
+      "hint_1_ru": "Начни с диагностики: `nginx -t` покажет где ошибка.",
+      "hint_2_ru": "Посмотри на вывод nginx -t — он укажет файл и строку с ошибкой. Синтаксическая ошибка обычно — лишний символ или пропущенный.",
+      "hint_3_ru": "Выполни nginx -t → найди файл с ошибкой → открой его nano или vim → исправь синтаксис (скорее всего лишняя точка с запятой) → nginx -t → nginx",
+      "category": "docker",
+      "difficulty": "intermediate",
+      "task_type": "break_and_fix",
+      "xp_reward": 300,
+      "time_limit": 45,
+      "docker_image": "devops-platform/broken/nginx_syntax:latest",
+      "checker_type": "port_check",
+      "checker_config": {
+        "port": 80
+      },
+      "solution_steps": [
+        {
+          "command": "nginx -t",
+          "explanation": "Диагностируем проблему — nginx покажет где ошибка"
+        },
+        {
+          "command": "cat /etc/nginx/nginx.conf",
+          "explanation": "Смотрим содержимое файла"
+        },
+        {
+          "command": "# Находим строку: worker_processes 1;;\n# Удаляем лишнюю точку с запятой\nsed -i 's/worker_processes 1;;/worker_processes 1;/' /etc/nginx/nginx.conf",
+          "explanation": "Исправляем синтаксическую ошибку"
+        },
+        {
+          "command": "nginx -t && nginx",
+          "explanation": "Проверяем и запускаем Nginx"
+        }
+      ],
+      "is_active": true,
+      "order": 80,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 10,
+    "fields": {
+      "title_ru": "Break & Fix: Docker-контейнер не стартует",
+      "description_ru": "СЛОМАНО: Docker-контейнер с веб-сервером не запускается.\n\nСимптом: контейнер запускается, но сразу останавливается. Команда `docker logs <container>` покажет причину. Найди и исправь проблему.",
+      "hint_1_ru": "Начни с `docker logs <container_name>` — логи покажут почему контейнер падает.",
+      "hint_2_ru": "Скорее всего проблема с портом или конфигурацией. Проверь что порт не занят: ss -tlnp | grep 80",
+      "hint_3_ru": "docker logs → найди ошибку → проверь порт (ss -tlnp) → если порт занят, останови конкурирующий процесс → перезапусти контейнер",
+      "category": "docker",
+      "difficulty": "intermediate",
+      "task_type": "break_and_fix",
+      "xp_reward": 350,
+      "time_limit": 50,
+      "docker_image": "devops-platform/broken/docker_port:latest",
+      "checker_type": "command_output",
+      "checker_config": {
+        "command": "docker ps --filter status=running",
+        "expected": "nginx"
+      },
+      "solution_steps": [
+        {
+          "command": "docker ps -a",
+          "explanation": "Смотрим все контейнеры включая остановленные"
+        },
+        {
+          "command": "docker logs broken_nginx",
+          "explanation": "Проверяем логи упавшего контейнера"
+        },
+        {
+          "command": "ss -tlnp | grep 80",
+          "explanation": "Проверяем не занят ли порт 80"
+        },
+        {
+          "command": "docker run -d --name nginx_fixed -p 80:80 nginx",
+          "explanation": "Запускаем Nginx с правильным портом"
+        }
+      ],
+      "is_active": true,
+      "order": 90,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  }
+]

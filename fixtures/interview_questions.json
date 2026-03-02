@@ -1,0 +1,223 @@
+[
+  {
+    "model": "interview.interviewquestion",
+    "pk": 1,
+    "fields": {
+      "question_ru": "Что такое inode в Linux и какую информацию он хранит?",
+      "sample_answer_ru": "Inode — структура данных в файловой системе, хранящая метаданные файла: права доступа, владелец, группа, размер, временные метки (atime/mtime/ctime), количество жёстких ссылок, указатели на блоки данных. Inode НЕ хранит имя файла — оно хранится в директории.",
+      "category": "linux",
+      "difficulty": "junior",
+      "tags": ["filesystem", "inode"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 2,
+    "fields": {
+      "question_ru": "Чем отличается жёсткая ссылка (hard link) от символической (symlink)?",
+      "sample_answer_ru": "Жёсткая ссылка — ещё одно имя для того же inode, файл удаляется только когда счётчик ссылок = 0. Симлинк — отдельный файл с путём к цели, удаление цели делает симлинк «битым». Жёсткие ссылки не работают между файловыми системами и не могут указывать на директории.",
+      "category": "linux",
+      "difficulty": "junior",
+      "tags": ["filesystem", "links"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 3,
+    "fields": {
+      "question_ru": "Что делает команда chmod 755 и что означают эти цифры?",
+      "sample_answer_ru": "755 в восьмеричном: 7=rwx (владелец — читать/писать/выполнять), 5=r-x (группа — читать/выполнять), 5=r-x (остальные — читать/выполнять). Итог: владелец может всё, остальные — только читать и выполнять.",
+      "category": "linux",
+      "difficulty": "junior",
+      "tags": ["permissions", "chmod"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 4,
+    "fields": {
+      "question_ru": "Как работает команда grep и какие ключи используешь чаще всего?",
+      "sample_answer_ru": "grep ищет строки по регулярному выражению. Частые ключи: -r (рекурсивно), -i (без учёта регистра), -n (номер строки), -v (инверсия — строки БЕЗ совпадения), -l (только имена файлов), -A/-B/-C (контекст вокруг совпадения), -E (расширенные regex).",
+      "category": "linux",
+      "difficulty": "junior",
+      "tags": ["grep", "cli", "regex"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 5,
+    "fields": {
+      "question_ru": "Что такое процесс-зомби в Linux? Как его обнаружить и устранить?",
+      "sample_answer_ru": "Зомби-процесс завершился, но не был «пожат» родителем (wait() не вызван), запись в таблице процессов остаётся. Обнаружить: ps aux | grep Z или top (статус Z). Устранить: послать SIGCHLD родителю, или убить родителя — тогда зомби усыновит init/systemd и очистит.",
+      "category": "linux",
+      "difficulty": "middle",
+      "tags": ["processes", "signals"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 6,
+    "fields": {
+      "question_ru": "Чем отличается SIGTERM от SIGKILL?",
+      "sample_answer_ru": "SIGTERM (15) — «мягкое» завершение, процесс может перехватить сигнал, выполнить cleanup и завершиться корректно. SIGKILL (9) — немедленное завершение ядром, процесс не может перехватить или игнорировать. Всегда сначала SIGTERM, потом через таймаут SIGKILL.",
+      "category": "linux",
+      "difficulty": "junior",
+      "tags": ["signals", "processes"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 7,
+    "fields": {
+      "question_ru": "Что такое Docker layer и как это влияет на размер образа?",
+      "sample_answer_ru": "Каждая инструкция в Dockerfile создаёт слой (read-only). Слои кешируются и переиспользуются. Размер образа = сумма всех слоёв. Чтобы уменьшить размер: объединять RUN-команды через &&, удалять кеш apt в том же слое, использовать multi-stage builds, выбирать alpine-базовые образы.",
+      "category": "docker",
+      "difficulty": "junior",
+      "tags": ["docker", "layers", "optimization"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 8,
+    "fields": {
+      "question_ru": "В чём разница между COPY и ADD в Dockerfile?",
+      "sample_answer_ru": "COPY — просто копирует файлы/директории из контекста сборки. ADD — делает то же самое плюс: автоматически распаковывает tar-архивы и может принимать URL. Рекомендуется использовать COPY если не нужны дополнительные возможности ADD — поведение предсказуемее.",
+      "category": "docker",
+      "difficulty": "junior",
+      "tags": ["docker", "dockerfile"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 9,
+    "fields": {
+      "question_ru": "Что такое Docker network bridge и как контейнеры общаются между собой?",
+      "sample_answer_ru": "Bridge — виртуальный сетевой интерфейс docker0. По умолчанию контейнеры в одной сети могут общаться по IP. В user-defined bridge сети — ещё и по имени контейнера (DNS резолюция). Для изоляции — отдельные сети. Для доступа снаружи — порт-маппинг (-p host:container).",
+      "category": "docker",
+      "difficulty": "middle",
+      "tags": ["docker", "networking"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 10,
+    "fields": {
+      "question_ru": "Что такое nginx worker_processes и worker_connections? Как их настраивать?",
+      "sample_answer_ru": "worker_processes — количество рабочих процессов, обычно = числу CPU ядер (или auto). worker_connections — максимум соединений на один воркер. Максимум одновременных соединений = worker_processes × worker_connections. Для статики: больше worker_connections. Учитывай лимит open files (ulimit -n).",
+      "category": "nginx",
+      "difficulty": "middle",
+      "tags": ["nginx", "configuration", "performance"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 11,
+    "fields": {
+      "question_ru": "Чем отличается nginx proxy_pass от fastcgi_pass?",
+      "sample_answer_ru": "proxy_pass проксирует HTTP-запросы на upstream (другой веб-сервер/приложение). fastcgi_pass — для FastCGI-протокола (PHP-FPM, и др.). proxy_pass — универсальный, fastcgi_pass — специализированный с отдельными параметрами (fastcgi_param, SCRIPT_FILENAME и т.д.).",
+      "category": "nginx",
+      "difficulty": "middle",
+      "tags": ["nginx", "proxy", "fastcgi"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 12,
+    "fields": {
+      "question_ru": "Что такое systemd unit и какие типы unit-файлов существуют?",
+      "sample_answer_ru": "Unit — единица управления в systemd. Типы: .service (процесс/демон), .socket (сокет-активация), .timer (замена cron), .mount (точки монтирования), .target (группа юнитов, аналог runlevel), .path (мониторинг файловой системы), .slice (группы ресурсов cgroups).",
+      "category": "systemd",
+      "difficulty": "junior",
+      "tags": ["systemd", "units"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 13,
+    "fields": {
+      "question_ru": "Как работает systemd socket activation?",
+      "sample_answer_ru": "Socket activation — systemd создаёт сокет и слушает его. Когда приходит соединение, systemd запускает сервис и передаёт ему сокет. Преимущества: параллельный старт сервисов при загрузке, сервис не нужен до первого запроса, автоматический рестарт без потери соединений.",
+      "category": "systemd",
+      "difficulty": "middle",
+      "tags": ["systemd", "socket", "activation"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 14,
+    "fields": {
+      "question_ru": "Объясни модель OSI. Какие уровни самые важные для DevOps?",
+      "sample_answer_ru": "7 уровней: физический, канальный, сетевой (IP), транспортный (TCP/UDP), сеансовый, представления, прикладной (HTTP/DNS). Для DevOps важны: L3 (IP-маршрутизация), L4 (TCP порты, балансировка), L7 (HTTP, reverse proxy, WAF, load balancing по content).",
+      "category": "networks",
+      "difficulty": "junior",
+      "tags": ["networking", "osi"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 15,
+    "fields": {
+      "question_ru": "Что происходит когда ты вводишь URL в браузере и нажимаешь Enter?",
+      "sample_answer_ru": "1. DNS резолюция (кеш → /etc/hosts → рекурсивный DNS). 2. TCP handshake (SYN/SYN-ACK/ACK). 3. TLS handshake если HTTPS. 4. HTTP запрос (GET / HTTP/1.1). 5. Сервер обрабатывает, возвращает HTML. 6. Браузер парсит HTML, загружает ресурсы (CSS/JS/img). 7. Рендеринг страницы.",
+      "category": "networks",
+      "difficulty": "junior",
+      "tags": ["networking", "dns", "tcp", "http"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 16,
+    "fields": {
+      "question_ru": "Чем отличается git merge от git rebase?",
+      "sample_answer_ru": "merge — создаёт merge-коммит, сохраняет историю ветки. rebase — переносит коммиты ветки поверх другой ветки, история линейная. rebase переписывает SHA коммитов — нельзя делать для общих веток. Золотое правило: rebase только локальные коммиты, merge для публичных веток.",
+      "category": "git",
+      "difficulty": "junior",
+      "tags": ["git", "merge", "rebase"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "interview.interviewquestion",
+    "pk": 17,
+    "fields": {
+      "question_ru": "Что такое CI/CD и в чём разница между Continuous Delivery и Continuous Deployment?",
+      "sample_answer_ru": "CI (Continuous Integration) — автоматическая сборка и тестирование при каждом коммите. CD Delivery — код готов к деплою в продакшн, но деплой ручной. CD Deployment — деплой в продакшн автоматически при прохождении всех проверок. Deployment требует высокого покрытия тестами и confidence в pipeline.",
+      "category": "cicd",
+      "difficulty": "junior",
+      "tags": ["cicd", "devops"],
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  }
+]

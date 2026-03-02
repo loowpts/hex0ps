@@ -1,0 +1,117 @@
+[
+  {
+    "model": "cheatsheets.cheatsheet",
+    "pk": 1,
+    "fields": {
+      "title_ru": "Linux: Файловая система",
+      "category": "linux",
+      "content_md": "# Linux: Файловая система\n\n## Навигация\n\n| Команда | Описание |\n|---|---|\n| `ls -la` | Список файлов с правами и размером |\n| `cd /path` | Перейти в директорию |\n| `pwd` | Текущая директория |\n| `find / -name file.txt` | Найти файл по имени |\n\n## Права доступа\n\n```bash\nchmod 755 file    # rwxr-xr-x\nchown user:group file\n```\n\n## Дисковое пространство\n\n```bash\ndf -h             # Место на разделах\ndu -sh /var/log   # Размер директории\n```",
+      "tags": ["ls", "find", "chmod", "chown", "df", "du"],
+      "order": 1,
+      "is_active": true,
+      "created_at": "2026-03-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "cheatsheets.cheatsheet",
+    "pk": 2,
+    "fields": {
+      "title_ru": "Linux: Процессы и сигналы",
+      "category": "linux",
+      "content_md": "# Процессы и сигналы\n\n## Просмотр процессов\n\n```bash\nps aux              # Все процессы\ntop                 # Интерактивный мониторинг\nhtop                # Улучшенный top\npgrep nginx         # PID по имени\n```\n\n## Управление\n\n```bash\nkill -9 PID         # Принудительное завершение\nkillall nginx       # Завершить все nginx\nnohup cmd &         # Запуск в фоне\n```",
+      "tags": ["ps", "top", "kill", "pgrep", "killall", "nohup"],
+      "order": 2,
+      "is_active": true,
+      "created_at": "2026-03-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "cheatsheets.cheatsheet",
+    "pk": 3,
+    "fields": {
+      "title_ru": "Docker: Основные команды",
+      "category": "docker",
+      "content_md": "# Docker: Основные команды\n\n## Контейнеры\n\n```bash\ndocker ps -a                    # Все контейнеры\ndocker run -d -p 80:80 nginx    # Запустить в фоне\ndocker stop container_id        # Остановить\ndocker rm container_id          # Удалить\ndocker logs -f container_id     # Логи в реальном времени\ndocker exec -it container bash  # Войти в контейнер\n```\n\n## Образы\n\n```bash\ndocker images                   # Список образов\ndocker pull nginx               # Скачать образ\ndocker rmi nginx                # Удалить образ\ndocker build -t myapp .         # Собрать образ\n```\n\n## Docker Compose\n\n```bash\ndocker compose up -d            # Запустить сервисы\ndocker compose down             # Остановить и удалить\ndocker compose ps               # Статус сервисов\ndocker compose logs -f          # Логи всех сервисов\n```",
+      "tags": ["docker", "container", "image", "compose", "logs"],
+      "order": 1,
+      "is_active": true,
+      "created_at": "2026-03-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "cheatsheets.cheatsheet",
+    "pk": 4,
+    "fields": {
+      "title_ru": "Nginx: Конфигурация",
+      "category": "nginx",
+      "content_md": "# Nginx: Конфигурация\n\n## Управление сервисом\n\n```bash\nsystemctl start nginx\nsystemctl stop nginx\nsystemctl reload nginx      # Перезагрузить без downtime\nnginx -t                    # Проверить конфиг\nnginx -T                    # Показать весь конфиг\n```\n\n## Структура конфига\n\n```nginx\nserver {\n    listen 80;\n    server_name example.com;\n    root /var/www/html;\n\n    location / {\n        try_files $uri $uri/ =404;\n    }\n\n    location /api {\n        proxy_pass http://localhost:8000;\n        proxy_set_header Host $host;\n    }\n}\n```",
+      "tags": ["nginx", "proxy", "server", "location", "reload"],
+      "order": 1,
+      "is_active": true,
+      "created_at": "2026-03-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "cheatsheets.cheatsheet",
+    "pk": 5,
+    "fields": {
+      "title_ru": "Git: Основные операции",
+      "category": "git",
+      "content_md": "# Git: Основные операции\n\n## Базовые\n\n```bash\ngit init                    # Инициализировать репозиторий\ngit clone url               # Клонировать\ngit status                  # Статус изменений\ngit add .                   # Добавить все изменения\ngit commit -m 'message'     # Создать коммит\ngit push origin main        # Отправить изменения\ngit pull                    # Получить изменения\n```\n\n## Ветки\n\n```bash\ngit branch                  # Список веток\ngit checkout -b feature     # Создать и перейти\ngit merge feature           # Слить ветку\ngit rebase main             # Перебазировать\ngit log --oneline           # Краткий лог\n```",
+      "tags": ["git", "commit", "push", "pull", "branch", "merge"],
+      "order": 1,
+      "is_active": true,
+      "created_at": "2026-03-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "cheatsheets.cheatsheetentry",
+    "pk": 1,
+    "fields": { "cheatsheet": 1, "command": "ls -la", "description_ru": "Список файлов с правами, размером и скрытыми файлами", "example": "ls -la /etc/nginx", "order": 1 }
+  },
+  {
+    "model": "cheatsheets.cheatsheetentry",
+    "pk": 2,
+    "fields": { "cheatsheet": 1, "command": "find / -name '*.log' -mtime +7", "description_ru": "Найти .log файлы старше 7 дней", "example": "find /var/log -name '*.log' -mtime +7 -delete", "order": 2 }
+  },
+  {
+    "model": "cheatsheets.cheatsheetentry",
+    "pk": 3,
+    "fields": { "cheatsheet": 1, "command": "chmod 755 file", "description_ru": "Установить права rwxr-xr-x (владелец=полный, остальные=чтение+выполнение)", "example": "chmod 755 /usr/local/bin/script.sh", "order": 3 }
+  },
+  {
+    "model": "cheatsheets.cheatsheetentry",
+    "pk": 4,
+    "fields": { "cheatsheet": 2, "command": "ps aux | grep nginx", "description_ru": "Найти процессы nginx среди всех процессов", "example": "ps aux | grep nginx | grep -v grep", "order": 1 }
+  },
+  {
+    "model": "cheatsheets.cheatsheetentry",
+    "pk": 5,
+    "fields": { "cheatsheet": 2, "command": "kill -9 PID", "description_ru": "Принудительно завершить процесс (SIGKILL)", "example": "kill -9 $(pgrep nginx)", "order": 2 }
+  },
+  {
+    "model": "cheatsheets.cheatsheetentry",
+    "pk": 6,
+    "fields": { "cheatsheet": 3, "command": "docker exec -it container bash", "description_ru": "Открыть интерактивный bash в запущенном контейнере", "example": "docker exec -it my_nginx bash", "order": 1 }
+  },
+  {
+    "model": "cheatsheets.cheatsheetentry",
+    "pk": 7,
+    "fields": { "cheatsheet": 3, "command": "docker logs -f --tail=100 container", "description_ru": "Следить за последними 100 строками логов контейнера", "example": "docker logs -f --tail=100 my_app", "order": 2 }
+  },
+  {
+    "model": "cheatsheets.cheatsheetentry",
+    "pk": 8,
+    "fields": { "cheatsheet": 4, "command": "nginx -t && nginx -s reload", "description_ru": "Проверить конфиг и перезагрузить nginx без downtime", "example": "nginx -t && systemctl reload nginx", "order": 1 }
+  },
+  {
+    "model": "cheatsheets.cheatsheetentry",
+    "pk": 9,
+    "fields": { "cheatsheet": 5, "command": "git log --oneline --graph --all", "description_ru": "Показать граф всех веток в одну строку", "example": "git log --oneline --graph --all --decorate", "order": 1 }
+  },
+  {
+    "model": "cheatsheets.cheatsheetentry",
+    "pk": 10,
+    "fields": { "cheatsheet": 5, "command": "git stash pop", "description_ru": "Применить последний отложенный stash", "example": "git stash && git pull && git stash pop", "order": 2 }
+  }
+]
