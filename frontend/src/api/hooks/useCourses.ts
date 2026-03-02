@@ -51,8 +51,10 @@ export function useLessonComplete() {
   return useMutation({
     mutationFn: (lessonId: number) =>
       api.post(`/courses/lessons/${lessonId}/complete/`).then((r) => r.data),
-    onSuccess: () => {
+    onSuccess: (_data, lessonId) => {
       qc.invalidateQueries({ queryKey: ['courses'] })
+      qc.invalidateQueries({ queryKey: ['course'] })
+      qc.invalidateQueries({ queryKey: ['lesson', lessonId] })
       qc.invalidateQueries({ queryKey: ['me'] })
     },
   })
@@ -65,6 +67,7 @@ export function useQuizSubmit() {
       api.post(`/courses/quiz/${quizId}/submit/`, { answers }).then((r) => r.data),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['courses'] })
+      qc.invalidateQueries({ queryKey: ['course'] })
       qc.invalidateQueries({ queryKey: ['me'] })
     },
   })

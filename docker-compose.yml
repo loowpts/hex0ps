@@ -111,3 +111,9 @@ volumes:
   postgres_data:
   ollama_data:
   media_data:
+
+networks:
+  default:
+    name: hex0ps_default
+  devops_sandbox:
+    name: devops_sandbox
