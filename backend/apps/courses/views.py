@@ -208,6 +208,7 @@ def lesson_complete_view(request, lesson_id):
     if first_time:
         xp_earned = lesson.xp_reward
         request.user.add_xp(xp_earned)
+        request.user.update_streak()
         ActivityLog.objects.create(
             user=request.user,
             action=ActivityLog.ACTION_LESSON_COMPLETED,
@@ -271,6 +272,7 @@ def quiz_submit_view(request, quiz_id):
     if passed:
         xp_earned = quiz.lesson.xp_reward
         request.user.add_xp(xp_earned)
+        request.user.update_streak()
 
         # Обновляем прогресс урока
         prog, _ = UserLessonProgress.objects.get_or_create(
