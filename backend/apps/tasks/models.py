@@ -247,6 +247,8 @@ class ActivityLog(models.Model):
     ACTION_TASK_FAILED = 'task_failed'
     ACTION_HINT_USED = 'hint_used'
     ACTION_LOGIN = 'login'
+    ACTION_LESSON_COMPLETED = 'lesson_completed'
+    ACTION_QUIZ_PASSED = 'quiz_passed'
 
     ACTION_CHOICES = [
         (ACTION_TASK_STARTED, 'Начал задачу'),
@@ -254,6 +256,8 @@ class ActivityLog(models.Model):
         (ACTION_TASK_FAILED, 'Провалил задачу'),
         (ACTION_HINT_USED, 'Использовал подсказку'),
         (ACTION_LOGIN, 'Вошёл в систему'),
+        (ACTION_LESSON_COMPLETED, 'Завершил урок'),
+        (ACTION_QUIZ_PASSED, 'Сдал тест'),
     ]
 
     user = models.ForeignKey(

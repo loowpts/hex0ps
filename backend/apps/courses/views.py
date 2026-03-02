@@ -12,6 +12,7 @@ from .models import (
     Course, Lesson, Quiz, QuizQuestion, QuizAnswer,
     QuizAttempt, UserCourseProgress, UserLessonProgress,
 )
+from apps.tasks.models import ActivityLog
 from .serializers import (
     CourseListSerializer, CourseDetailSerializer,
     LessonDetailSerializer, QuizAttemptResultSerializer,
@@ -206,6 +207,11 @@ def lesson_complete_view(request, lesson_id):
     if first_time:
         xp_earned = lesson.xp_reward
         request.user.add_xp(xp_earned)
+        ActivityLog.objects.create(
+            user=request.user,
+            action=ActivityLog.ACTION_LESSON_COMPLETED,
+            metadata={'lesson_id': lesson.id, 'xp_earned': xp_earned},
+        )
 
     return Response({
         'completed': True,
@@ -271,6 +277,11 @@ def quiz_submit_view(request, quiz_id):
         if not prog.quiz_passed:
             prog.quiz_passed = True
             prog.mark_completed()
+            ActivityLog.objects.create(
+                user=request.user,
+                action=ActivityLog.ACTION_QUIZ_PASSED,
+                metadata={'quiz_id': quiz.id, 'score': score, 'xp_earned': xp_earned},
+            )
 
     attempt = QuizAttempt.objects.create(
         user=request.user,

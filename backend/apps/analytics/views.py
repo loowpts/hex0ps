@@ -26,12 +26,17 @@ def analytics_me_view(request):
     if cached_data is not None:
         return Response(cached_data)
 
-    # Heatmap за 365 дней
+    # Heatmap за 365 дней — учитываем задачи, уроки и квизы
     since = timezone.now() - timedelta(days=365)
     heatmap = defaultdict(lambda: {'tasks': 0, 'xp': 0, 'time_minutes': 0})
+    activity_actions = [
+        ActivityLog.ACTION_TASK_COMPLETED,
+        ActivityLog.ACTION_LESSON_COMPLETED,
+        ActivityLog.ACTION_QUIZ_PASSED,
+    ]
     for created_at, metadata in ActivityLog.objects.filter(
         user=user,
-        action=ActivityLog.ACTION_TASK_COMPLETED,
+        action__in=activity_actions,
         created_at__gte=since,
     ).values_list('created_at', 'metadata'):
         date_key = created_at.date().isoformat()

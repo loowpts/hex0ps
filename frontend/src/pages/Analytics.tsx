@@ -8,7 +8,7 @@ import { ru } from 'date-fns/locale'
 
 function HeatmapCalendar({ heatmap }: { heatmap: AnalyticsData['heatmap'] }) {
   const today = new Date()
-  const start = subDays(today, 89) // ~3 months
+  const start = subDays(today, 364) // 365 дней
   const days = eachDayOfInterval({ start, end: today })
 
   const getColor = (dateKey: string) => {
@@ -253,7 +253,7 @@ export default function Analytics() {
 
       {/* Heatmap */}
       <div className="bg-[#0f1520] border border-[#1e2d45] rounded-2xl p-5">
-        <h2 className="text-[#e2e8f0] font-semibold mb-4">Активность за 90 дней</h2>
+        <h2 className="text-[#e2e8f0] font-semibold mb-4">Активность за 365 дней</h2>
         <HeatmapCalendar heatmap={data.heatmap} />
       </div>
 
