@@ -26,6 +26,7 @@ if echo "$@" | grep -q "daphne"; then
   wait_for_db
 
   echo "[entrypoint] Migrations..."
+  python manage.py makemigrations users --noinput
   python manage.py makemigrations --noinput
   python manage.py migrate --noinput
 
