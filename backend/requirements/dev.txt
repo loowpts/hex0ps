@@ -1,0 +1,14 @@
+-r base.txt
+
+fakeredis==2.*
+pytest==7.*
+pytest-django==4.*
+pytest-asyncio==0.23.*
+pytest-cov==4.*
+factory-boy==3.*
+faker==20.*
+flake8==7.*
+black==24.*
+ipython==8.*
+django-debug-toolbar==4.*
+django-extensions==3.*
